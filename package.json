@@ -1,0 +1,16 @@
+{
+  "name": "campusbite-root",
+  "version": "1.0.0",
+  "description": "CampusBite — Smart Campus Food Ordering & Insight Platform",
+  "private": true,
+  "scripts": {
+    "install:all": "powershell -Command \"cd backend; npm install; cd ../frontend; npm install; cd ..\"",
+    "db:push": "npm run db:push --prefix backend",
+    "db:seed": "npm run db:seed --prefix backend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "test:backend": "npm run test --prefix backend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  },
+  "keywords": ["campus", "food-ordering", "canteen", "mca-project", "prisma", "react", "socketio"]
+}
