@@ -1,0 +1,146 @@
+// CampusBite Prisma Database Schema (SQLite Default for local/academic execution)
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  role         String   @default("STUDENT") // STUDENT, KITCHEN_STAFF, ADMIN
+  status       String   @default("ACTIVE")  // ACTIVE, INACTIVE
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders        Order[]
+  notifications Notification[]
+  statusChanges OrderStatusHistory[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model FoodCategory {
+  id          String     @id @default(uuid())
+  name        String     @unique
+  description String?
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  foodItems   FoodItem[]
+}
+
+model FoodItem {
+  id              String       @id @default(uuid())
+  categoryId      String
+  category        FoodCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name            String
+  description     String
+  price           Float
+  imageUrl        String
+  ingredients     String
+  dietaryType     String       @default("VEGETARIAN") // VEGETARIAN, NON_VEGETARIAN, VEGAN, EGG
+  available       Boolean      @default(true)
+  stockQuantity   Int          @default(50)
+  preparationTime Int          @default(15) // minutes
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([categoryId])
+  @@index([dietaryType])
+  @@index([available])
+}
+
+model Order {
+  id            String    @id @default(uuid())
+  orderNumber   String    @unique // e.g. CB-2026-0001
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  totalAmount   Float
+  status        String    @default("PLACED") // PLACED, CONFIRMED, PREPARING, READY, COMPLETED, CANCELLED
+  paymentStatus String    @default("PENDING") // PENDING, SUCCESS, FAILED, REFUNDED
+  pickupTime    DateTime?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  items         OrderItem[]
+  payment       Payment?
+  statusHistory OrderStatusHistory[]
+  notifications Notification[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([paymentStatus])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  foodItemId String
+  foodItem   FoodItem @relation(fields: [foodItemId], references: [id])
+  quantity   Int
+  unitPrice  Float // Frozen unit price at time of purchase
+  subtotal   Float
+
+  @@index([orderId])
+  @@index([foodItemId])
+}
+
+model Payment {
+  id                   String    @id @default(uuid())
+  orderId              String    @unique
+  order                Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  transactionReference String    @unique
+  amount               Float
+  method               String    @default("MOCK") // MOCK, UPI, CARD, ONLINE
+  status               String    @default("PENDING") // PENDING, SUCCESS, FAILED, REFUNDED
+  paidAt               DateTime?
+  gatewayResponse      String?   // JSON string of gateway response
+  createdAt            DateTime  @default(now())
+
+  @@index([transactionReference])
+  @@index([status])
+}
+
+model OrderStatusHistory {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String   // PLACED, CONFIRMED, PREPARING, READY, COMPLETED, CANCELLED
+  changedBy String?  // User ID or Actor
+  user      User?    @relation(fields: [changedBy], references: [id], onDelete: SetNull)
+  notes     String?
+  timestamp DateTime @default(now())
+
+  @@index([orderId])
+  @@index([timestamp])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   String?
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  type      String   // ORDER_UPDATE, SYSTEM, PROMO
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+}
