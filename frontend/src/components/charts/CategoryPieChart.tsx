@@ -3,7 +3,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recha
 import { CategorySales } from '../../types/index.js';
 
 export const CategoryPieChart: React.FC<{ data: CategorySales[] }> = ({ data }) => {
-  const COLORS = ['#f97316', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'];
+  const COLORS = ['#ff6b00', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b'];
 
   return (
     <div className="w-full h-72">
@@ -18,6 +18,7 @@ export const CategoryPieChart: React.FC<{ data: CategorySales[] }> = ({ data }) 
             paddingAngle={4}
             dataKey="revenue"
             nameKey="name"
+            stroke="none"
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -25,9 +26,10 @@ export const CategoryPieChart: React.FC<{ data: CategorySales[] }> = ({ data }) 
           </Pie>
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderRadius: '16px',
-              border: 'none',
+              backgroundColor: '#131722',
+              borderRadius: '14px',
+              border: '1px solid rgba(255, 107, 0, 0.3)',
+              boxShadow: '0 15px 30px rgba(0, 0, 0, 0.9)',
               color: '#fff',
               fontSize: '12px',
             }}
@@ -40,7 +42,7 @@ export const CategoryPieChart: React.FC<{ data: CategorySales[] }> = ({ data }) 
             verticalAlign="bottom"
             height={36}
             iconType="circle"
-            formatter={(val) => <span className="text-xs text-slate-600 font-medium">{val}</span>}
+            formatter={(val) => <span className="text-xs text-slate-300 font-semibold">{val}</span>}
           />
         </PieChart>
       </ResponsiveContainer>

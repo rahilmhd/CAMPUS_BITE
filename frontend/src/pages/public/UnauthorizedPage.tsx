@@ -15,15 +15,15 @@ export const UnauthorizedPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
-      <div className="max-w-md w-full text-center space-y-6 bg-white p-8 sm:p-10 rounded-3xl border border-slate-100 shadow-xl">
-        <div className="w-16 h-16 rounded-3xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12 relative overflow-hidden">
+      <div className="max-w-md w-full text-center space-y-6 card-3d p-8 sm:p-10 relative z-10">
+        <div className="w-16 h-16 rounded-3xl bg-rose-950/70 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto shadow-lg shadow-rose-500/20">
           <ShieldAlert className="w-8 h-8" />
         </div>
 
         <div className="space-y-2">
-          <h2 className="text-2xl font-black text-slate-900">Access Denied (403)</h2>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+          <h2 className="text-2xl font-black text-white">Access Denied (403)</h2>
+          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
             You do not have permission to view this section. This portal is restricted to authorized roles.
           </p>
         </div>

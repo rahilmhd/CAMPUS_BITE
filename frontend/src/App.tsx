@@ -47,7 +47,7 @@ export const App: React.FC = () => {
         <SocketProvider>
           <NotificationProvider>
             <BrowserRouter>
-              <div className="min-h-screen flex flex-col bg-slate-50 selection:bg-brand-500 selection:text-white">
+              <div className="min-h-screen flex flex-col bg-dark-bg text-slate-100 selection:bg-brand-500 selection:text-white">
                 <Navbar />
                 <main className="flex-1">
                   <Routes>

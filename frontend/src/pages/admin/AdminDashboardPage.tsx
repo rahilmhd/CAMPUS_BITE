@@ -12,8 +12,6 @@ import { PopularFoodChart } from '../../components/charts/PopularFoodChart.js';
 import { CategoryPieChart } from '../../components/charts/CategoryPieChart.js';
 import {
   IndianRupee,
-  ShoppingBag,
-  Clock,
   Users,
   Utensils,
   TrendingUp,
@@ -55,7 +53,7 @@ export const AdminDashboardPage: React.FC = () => {
   if (loading || !overview) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-white/10 border-t-brand-500 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -63,24 +61,24 @@ export const AdminDashboardPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Welcome & Navigation Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.07]">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-brand-600">
+          <span className="text-xs font-bold uppercase tracking-wider text-brand-400">
             Administrative Central Hub
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
             CampusBite Management & Insights
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Real-time canteen metrics calculated directly from database order transactions.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link to="/admin/forecast" className="btn-secondary text-xs py-2 px-3 flex items-center gap-1.5 font-bold">
-            <Sparkles className="w-4 h-4 text-amber-500" /> Moving Average Explorer
+            <Sparkles className="w-4 h-4 text-brand-400" /> Demand Explorer
           </Link>
-          <Link to="/admin/reports" className="btn-primary text-xs py-2 px-3 font-bold">
+          <Link to="/admin/reports" className="btn-primary text-xs py-2 px-3 font-bold shadow-3d-btn">
             Export Reports
           </Link>
         </div>
@@ -124,13 +122,13 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Sales Trend Chart */}
-        <div className="lg:col-span-8 bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="lg:col-span-8 card-3d p-6 space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
             <div>
-              <h3 className="text-base font-bold text-slate-900">Daily Revenue Trend (Last 14 Days)</h3>
+              <h3 className="text-base font-bold text-white">Daily Revenue Trend (Last 14 Days)</h3>
               <p className="text-xs text-slate-400">Calculated from actual completed transactions</p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-dark-elevated text-brand-400 border border-white/5">
               INR (₹)
             </span>
           </div>
@@ -139,9 +137,9 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
 
         {/* Category Breakdown Pie */}
-        <div className="lg:col-span-4 bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
-          <div>
-            <h3 className="text-base font-bold text-slate-900">Revenue by Category</h3>
+        <div className="lg:col-span-4 card-3d p-6 space-y-4">
+          <div className="pb-2 border-b border-white/[0.06]">
+            <h3 className="text-base font-bold text-white">Revenue by Category</h3>
             <p className="text-xs text-slate-400">Share of total sales across departments</p>
           </div>
 
@@ -150,15 +148,15 @@ export const AdminDashboardPage: React.FC = () => {
       </div>
 
       {/* Popular Foods Bar Chart */}
-      <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
+      <div className="card-3d p-6 space-y-4">
+        <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
           <div>
-            <h3 className="text-base font-bold text-slate-900">Food Popularity Rankings</h3>
+            <h3 className="text-base font-bold text-white">Food Popularity Rankings</h3>
             <p className="text-xs text-slate-400">Ranked by actual cumulative portions sold</p>
           </div>
           <Link
             to="/admin/foods"
-            className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+            className="text-xs font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1 transition-colors"
           >
             Manage Food Catalog <ArrowRight className="w-3.5 h-3.5" />
           </Link>

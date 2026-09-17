@@ -12,7 +12,7 @@ import {
 import { PopularFood } from '../../types/index.js';
 
 export const PopularFoodChart: React.FC<{ data: PopularFood[] }> = ({ data }) => {
-  const colors = ['#f97316', '#fb923c', '#fdba74', '#10b981', '#14b8a6', '#06b6d4', '#6366f1'];
+  const colors = ['#ff6b00', '#ff8533', '#ffa161', '#10b981', '#14b8a6', '#06b6d4', '#8b5cf6'];
 
   return (
     <div className="w-full h-72">
@@ -22,7 +22,7 @@ export const PopularFoodChart: React.FC<{ data: PopularFood[] }> = ({ data }) =>
           data={data.slice(0, 6)}
           margin={{ top: 5, right: 20, left: 40, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
+          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255, 255, 255, 0.07)" />
           <XAxis type="number" tickLine={false} axisLine={false} tick={{ fill: '#94a3b8', fontSize: 11 }} />
           <YAxis
             type="category"
@@ -30,13 +30,14 @@ export const PopularFoodChart: React.FC<{ data: PopularFood[] }> = ({ data }) =>
             tickLine={false}
             axisLine={false}
             width={110}
-            tick={{ fill: '#475569', fontSize: 11, fontWeight: 500 }}
+            tick={{ fill: '#e2e8f0', fontSize: 11, fontWeight: 600 }}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderRadius: '16px',
-              border: 'none',
+              backgroundColor: '#131722',
+              borderRadius: '14px',
+              border: '1px solid rgba(255, 107, 0, 0.3)',
+              boxShadow: '0 15px 30px rgba(0, 0, 0, 0.9)',
               color: '#fff',
               fontSize: '12px',
             }}

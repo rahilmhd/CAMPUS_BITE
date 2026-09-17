@@ -34,29 +34,37 @@ export const LandingPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-16 pb-20">
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24 bg-gradient-to-b from-brand-50/40 via-white to-slate-50/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24">
+        {/* Atmospheric Orange Ambient Light */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-brand-500/[0.12] rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-bold tracking-wide">
+                <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+                <span>Smart Campus Food Ordering</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
                 Fresh Campus Food,{' '}
-                <span className="bg-gradient-to-r from-brand-500 to-amber-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent">
                   Zero Waiting.
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
-                Pre-order meals from the campus canteen, skip the lines, and pick up your food fresh and ready.
+              <p className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed">
+                Pre-order meals from the campus canteen, skip the lines, and pick up your food fresh, hot, and ready.
               </p>
 
               {/* Action Buttons */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   to={getDashboardLink()}
-                  className="btn-primary py-3.5 px-8 text-base shadow-lg shadow-brand-500/25 flex items-center gap-2"
+                  className="btn-primary py-3.5 px-8 text-base flex items-center gap-2"
                 >
                   <UtensilsCrossed className="w-5 h-5" />
                   {user ? 'Go to Menu' : 'Browse Menu'}
@@ -67,45 +75,45 @@ export const LandingPage: React.FC = () => {
                     to="/login"
                     className="btn-secondary py-3.5 px-6 text-sm flex items-center gap-2"
                   >
-                    Sign In <ArrowRight className="w-4 h-4" />
+                    Sign In <ArrowRight className="w-4 h-4 text-brand-400" />
                   </Link>
                 )}
               </div>
             </div>
 
-            {/* Right Clean Graphic */}
+            {/* Right 3D Showcase Card */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-xl border border-slate-100 space-y-4">
+              <div className="w-full max-w-md card-3d p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <span className="text-xs font-bold text-slate-700">Canteen Open</span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-glow-sm"></span>
+                    <span className="text-xs font-bold text-slate-200">Canteen Counter Open</span>
                   </div>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-brand-50 text-brand-700">
-                    Order Online
+                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">
+                    Live Ordering
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-2xl">
+                <div className="p-4 rounded-2xl bg-dark-elevated/70 border border-white/[0.06] flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-2xl shadow-glow-orange-sm">
                     🍲
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-bold text-slate-900">Today's Specials</h3>
-                    <p className="text-xs text-slate-500">Prepared fresh throughout the day</p>
+                    <h3 className="text-sm font-bold text-white">Daily Fresh Specials</h3>
+                    <p className="text-xs text-slate-400">Cooked to order by campus chefs</p>
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-gradient-to-r from-brand-50/60 to-amber-50/60 border border-brand-100 flex items-center justify-between">
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-brand-950/40 to-dark-elevated border border-brand-500/30 flex items-center justify-between">
                   <div>
-                    <span className="text-xs text-slate-500 block">Avg. Preparation</span>
-                    <span className="text-sm font-bold text-slate-800">10 – 15 mins</span>
+                    <span className="text-[11px] text-slate-400 block font-medium">Avg. Wait Time</span>
+                    <span className="text-sm font-bold text-brand-400">Under 10 mins</span>
                   </div>
                   <Link
                     to="/student/menu"
-                    className="text-xs font-bold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+                    className="text-xs font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1 transition-colors"
                   >
-                    View Dishes <ArrowRight className="w-3.5 h-3.5" />
+                    Explore Menu <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
               </div>
@@ -114,36 +122,36 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Minimal 3-Feature Highlights */}
+      {/* 3D Minimal Feature Highlights */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center flex-shrink-0">
+          <div className="card-3d p-6 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-brand-500/15 text-brand-400 border border-brand-500/30 flex items-center justify-center flex-shrink-0 shadow-glow-orange-sm">
               <UtensilsCrossed className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Browse & Pre-Order</h3>
-              <p className="text-xs text-slate-500 mt-1">Select meals from the daily menu at your own pace.</p>
+              <h3 className="font-bold text-white text-base">Browse & Pre-Order</h3>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">Select meals from the daily menu in advance at your own convenience.</p>
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center flex-shrink-0">
+          <div className="card-3d p-6 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
               <Clock className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Save Time</h3>
-              <p className="text-xs text-slate-500 mt-1">Order before your break and pick up without lines.</p>
+              <h3 className="font-bold text-white text-base">Save Valuable Time</h3>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">Place orders between classes and pick up directly at the counter.</p>
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-start gap-4">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+          <div className="card-3d p-6 flex items-start gap-4">
+            <div className="w-11 h-11 rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
               <Bell className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Live Notifications</h3>
-              <p className="text-xs text-slate-500 mt-1">Get an alert the moment your food is ready at the counter.</p>
+              <h3 className="font-bold text-white text-base">Live Order Tracking</h3>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">Receive instant notifications the moment your meal is prepared.</p>
             </div>
           </div>
         </div>
@@ -154,12 +162,12 @@ export const LandingPage: React.FC = () => {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-slate-900">Popular Dishes</h2>
-              <p className="text-xs text-slate-500 mt-0.5">Top campus favorites today</p>
+              <h2 className="text-2xl font-bold text-white">Popular Dishes</h2>
+              <p className="text-xs text-slate-400 mt-0.5">Campus favorites freshly prepared today</p>
             </div>
             <Link
               to="/student/menu"
-              className="text-xs sm:text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1"
+              className="text-xs sm:text-sm font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1 transition-colors"
             >
               View Full Menu <ArrowRight className="w-4 h-4" />
             </Link>

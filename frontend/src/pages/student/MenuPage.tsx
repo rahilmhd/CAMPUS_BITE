@@ -3,7 +3,7 @@ import { FoodService } from '../../services/food.service.js';
 import { FoodItem, FoodCategory } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
 import { FilterBar } from '../../components/student/FilterBar.js';
-import { Utensils, AlertCircle } from 'lucide-react';
+import { Utensils } from 'lucide-react';
 
 export const MenuPage: React.FC = () => {
   const [foods, setFoods] = useState<FoodItem[]>([]);
@@ -48,7 +48,6 @@ export const MenuPage: React.FC = () => {
   };
 
   useEffect(() => {
-    // Debounce search/filter query
     const timer = setTimeout(() => {
       loadFoods();
     }, 250);
@@ -59,13 +58,13 @@ export const MenuPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Page Header */}
       <div>
-        <span className="text-xs font-bold uppercase tracking-wider text-brand-600">
-          Campus Canteen Catalog
+        <span className="text-xs font-bold uppercase tracking-wider text-brand-400">
+          Campus Canteen Menu
         </span>
-        <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-          Explore Live Food Menu
+        <h1 className="text-3xl font-black text-white tracking-tight mt-1">
+          Explore Today's Dishes
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+        <p className="text-xs sm:text-sm text-slate-400 mt-1">
           Freshly cooked meals, snacks, and beverages prepared daily by our campus culinary team.
         </p>
       </div>
@@ -91,19 +90,19 @@ export const MenuPage: React.FC = () => {
           {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
             <div
               key={n}
-              className="bg-white rounded-2xl h-72 border border-slate-100 shadow-sm animate-pulse p-4 space-y-3"
+              className="card-3d h-72 animate-pulse p-4 space-y-3"
             >
-              <div className="h-36 bg-slate-100 rounded-xl"></div>
-              <div className="h-4 bg-slate-100 rounded w-3/4"></div>
-              <div className="h-3 bg-slate-100 rounded w-1/2"></div>
+              <div className="h-36 bg-dark-elevated rounded-xl"></div>
+              <div className="h-4 bg-dark-elevated rounded w-3/4"></div>
+              <div className="h-3 bg-dark-elevated rounded w-1/2"></div>
             </div>
           ))}
         </div>
       ) : foods.length === 0 ? (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 shadow-sm space-y-3">
-          <Utensils className="w-12 h-12 mx-auto text-slate-300" />
-          <h3 className="text-base font-bold text-slate-800">No food items found</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <div className="card-3d p-12 text-center space-y-3">
+          <Utensils className="w-12 h-12 mx-auto text-slate-600" />
+          <h3 className="text-base font-bold text-white">No food items found</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
             Try adjusting your search query, removing dietary filters, or exploring another category.
           </p>
           <button

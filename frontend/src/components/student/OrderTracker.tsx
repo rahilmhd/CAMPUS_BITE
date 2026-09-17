@@ -55,10 +55,10 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
 
   if (status === 'CANCELLED') {
     return (
-      <div className="bg-rose-50 border border-rose-200 rounded-3xl p-6 text-center text-rose-700">
-        <XCircle className="w-10 h-10 mx-auto mb-2 text-rose-500" />
+      <div className="bg-rose-950/70 border border-rose-500/40 rounded-3xl p-6 text-center text-rose-300">
+        <XCircle className="w-10 h-10 mx-auto mb-2 text-rose-400" />
         <h3 className="text-base font-bold">Order #{orderNumber} Cancelled</h3>
-        <p className="text-xs text-rose-600 mt-1">This order was cancelled. Any debited amount will be refunded.</p>
+        <p className="text-xs text-rose-400/80 mt-1">This order was cancelled. Any debited amount will be refunded.</p>
       </div>
     );
   }
@@ -66,18 +66,18 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
   const currentIdx = steps.findIndex((s) => s.key === status);
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+    <div className="card-3d p-6 space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-white/[0.07]">
         <div>
-          <span className="text-xs font-semibold text-brand-600 uppercase tracking-wider">Live Tracker</span>
-          <h2 className="text-lg font-bold text-slate-900">Order #{orderNumber}</h2>
+          <span className="text-xs font-bold text-brand-400 uppercase tracking-wider">Live Status Tracker</span>
+          <h2 className="text-lg font-bold text-white mt-0.5">Order #{orderNumber}</h2>
         </div>
 
         {pickupTime && (
-          <div className="bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-2xl flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-            <span className="text-xs font-bold text-amber-800">
+          <div className="bg-amber-950/60 border border-amber-500/30 px-3.5 py-1.5 rounded-2xl flex items-center gap-2 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span className="text-xs font-bold text-amber-300">
               Pickup Estimated: {new Date(pickupTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>
@@ -87,9 +87,9 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
       {/* Stepper Progress Bar */}
       <div className="relative">
         {/* Connection Line */}
-        <div className="hidden sm:block absolute top-1/2 left-6 right-6 -translate-y-1/2 h-1 bg-slate-100 -z-0">
+        <div className="hidden sm:block absolute top-1/2 left-6 right-6 -translate-y-1/2 h-1 bg-dark-elevated -z-0 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-brand-500 to-emerald-500 transition-all duration-700 ease-out"
+            className="h-full bg-gradient-to-r from-brand-500 via-amber-400 to-emerald-400 transition-all duration-700 ease-out shadow-glow-orange-sm"
             style={{
               width: `${Math.min(100, Math.max(0, (currentIdx / (steps.length - 1)) * 100))}%`,
             }}
@@ -108,7 +108,7 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
                 key={step.key}
                 className={`flex sm:flex-col items-center sm:text-center gap-3 p-3 sm:p-2 rounded-2xl transition-all ${
                   isCurrent
-                    ? 'bg-brand-50/80 ring-2 ring-brand-500/30 shadow-md'
+                    ? 'bg-brand-500/15 border border-brand-500/40 shadow-glow-orange-sm'
                     : isCompleted
                     ? 'opacity-90'
                     : 'opacity-40'
@@ -117,18 +117,18 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
                 <div
                   className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all ${
                     isCurrent
-                      ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/30 scale-110 animate-bounce'
+                      ? 'bg-gradient-to-tr from-brand-600 to-brand-400 text-white shadow-glow-orange scale-110'
                       : isCompleted
-                      ? 'bg-emerald-500 text-white shadow-sm'
-                      : 'bg-slate-200 text-slate-500'
+                      ? 'bg-emerald-600 text-white shadow-sm'
+                      : 'bg-dark-elevated text-slate-500 border border-white/5'
                   }`}
                 >
                   {isCompleted ? <CheckCircle2 className="w-5 h-5" /> : step.icon}
                 </div>
 
                 <div className="text-left sm:text-center">
-                  <h4 className="text-xs font-bold text-slate-800">{step.title}</h4>
-                  <p className="text-[11px] text-slate-500 leading-tight">{step.description}</p>
+                  <h4 className={`text-xs font-bold ${isCurrent ? 'text-brand-300' : 'text-slate-200'}`}>{step.title}</h4>
+                  <p className="text-[11px] text-slate-400 leading-tight mt-0.5">{step.description}</p>
                 </div>
               </div>
             );
@@ -137,11 +137,11 @@ export const OrderTracker: React.FC<OrderTrackerProps> = ({
       </div>
 
       {status === 'READY' && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-3 text-emerald-800 animate-pulse">
+        <div className="bg-emerald-950/80 border border-emerald-500/40 rounded-2xl p-4 flex items-center gap-3 text-emerald-200 shadow-lg shadow-emerald-950/50 animate-pulse">
           <div className="p-2 rounded-xl bg-emerald-500 text-white font-bold">🔔</div>
           <div>
-            <h4 className="text-sm font-bold">Your food is ready!</h4>
-            <p className="text-xs text-emerald-700">Please proceed to Counter 1 and present your Order Number #{orderNumber}.</p>
+            <h4 className="text-sm font-bold">Your food is ready for pickup!</h4>
+            <p className="text-xs text-emerald-300/80">Please proceed to Counter 1 and present your Order Number #{orderNumber}.</p>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FoodCategory, DietaryType } from '../../types/index.js';
+import { FoodCategory } from '../../types/index.js';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 
 interface FilterBarProps {
@@ -30,7 +30,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onSortChange,
 }) => {
   return (
-    <div className="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm space-y-4">
+    <div className="card-3d p-5 space-y-4">
       {/* Search Input and Sort Row */}
       <div className="flex flex-col sm:flex-row items-center gap-3">
         <div className="relative flex-1 w-full">
@@ -40,12 +40,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search by food name, dish, ingredients..."
-            className="w-full pl-10 pr-10 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
+            className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
             >
               <X className="w-4 h-4" />
             </button>
@@ -53,14 +53,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         </div>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 whitespace-nowrap">
-            <SlidersHorizontal className="w-4 h-4 text-slate-400" />
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 whitespace-nowrap">
+            <SlidersHorizontal className="w-4 h-4 text-brand-400" />
             <span>Sort:</span>
           </div>
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="py-2.5 px-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500/20 w-full sm:w-auto"
+            className="py-2.5 px-3 rounded-xl bg-dark-elevated border border-white/10 text-xs font-semibold text-slate-200 focus:border-brand-500 w-full sm:w-auto"
           >
             <option value="popularity">Most Popular 🔥</option>
             <option value="price_asc">Price: Low to High</option>
@@ -74,10 +74,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
         <button
           onClick={() => onSelectCategory('')}
-          className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all ${
+          className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
             selectedCategory === ''
-              ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
-              : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+              ? 'bg-gradient-to-r from-brand-500 to-brand-600 text-white shadow-3d-btn border border-brand-400/40'
+              : 'bg-dark-elevated text-slate-300 hover:text-white hover:bg-dark-highlight border border-white/5'
           }`}
         >
           All Items
@@ -86,10 +86,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           <button
             key={cat.id}
             onClick={() => onSelectCategory(cat.id)}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
               selectedCategory === cat.id
-                ? 'bg-brand-500 text-white shadow-md shadow-brand-500/20'
-                : 'bg-slate-50 text-slate-600 hover:bg-slate-100'
+                ? 'bg-gradient-to-r from-brand-500 to-brand-600 text-white shadow-3d-btn border border-brand-400/40'
+                : 'bg-dark-elevated text-slate-300 hover:text-white hover:bg-dark-highlight border border-white/5'
             }`}
           >
             {cat.name}
@@ -98,7 +98,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       </div>
 
       {/* Secondary Filter Badges (Dietary & Availability) */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.07]">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-slate-400 mr-1">Diet:</span>
           {[
@@ -113,8 +113,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               onClick={() => onDietaryChange(item.val)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 dietaryFilter === item.val
-                  ? 'bg-slate-900 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-brand-500/20 text-brand-400 border border-brand-500/40 font-bold shadow-glow-orange-sm'
+                  : 'bg-dark-elevated text-slate-400 hover:text-slate-200 border border-white/5'
               }`}
             >
               {item.label}
@@ -122,12 +122,12 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           ))}
         </div>
 
-        <label className="flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer select-none">
+        <label className="flex items-center gap-2 text-xs font-semibold text-slate-300 cursor-pointer select-none">
           <input
             type="checkbox"
             checked={availableOnly}
             onChange={(e) => onAvailableChange(e.target.checked)}
-            className="w-4 h-4 rounded text-brand-500 focus:ring-brand-400 border-slate-300"
+            className="w-4 h-4 rounded text-brand-500 accent-brand-500 focus:ring-brand-400 border-white/10"
           />
           <span>In-Stock Only</span>
         </label>

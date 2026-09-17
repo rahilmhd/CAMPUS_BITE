@@ -17,11 +17,11 @@ export const SalesTrendChart: React.FC<{ data: DailyTrend[] }> = ({ data }) => {
         <AreaChart data={data} margin={{ top: 10, right: 10, left: -15, bottom: 0 }}>
           <defs>
             <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#f97316" stopOpacity={0.4} />
-              <stop offset="95%" stopColor="#f97316" stopOpacity={0.0} />
+              <stop offset="5%" stopColor="#ff6b00" stopOpacity={0.45} />
+              <stop offset="95%" stopColor="#ff6b00" stopOpacity={0.0} />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255, 255, 255, 0.07)" />
           <XAxis
             dataKey="date"
             tickLine={false}
@@ -36,9 +36,10 @@ export const SalesTrendChart: React.FC<{ data: DailyTrend[] }> = ({ data }) => {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderRadius: '16px',
-              border: 'none',
+              backgroundColor: '#131722',
+              borderRadius: '14px',
+              border: '1px solid rgba(255, 107, 0, 0.3)',
+              boxShadow: '0 15px 30px rgba(0, 0, 0, 0.9)',
               color: '#fff',
               fontSize: '12px',
               padding: '8px 12px',
@@ -48,7 +49,7 @@ export const SalesTrendChart: React.FC<{ data: DailyTrend[] }> = ({ data }) => {
           <Area
             type="monotone"
             dataKey="sales"
-            stroke="#ea580c"
+            stroke="#ff6b00"
             strokeWidth={3}
             fillOpacity={1}
             fill="url(#salesGrad)"
