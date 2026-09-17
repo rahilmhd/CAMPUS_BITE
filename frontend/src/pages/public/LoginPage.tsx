@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext.js';
 import { UtensilsCrossed, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
-  const { login, quickLogin } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -23,19 +23,6 @@ export const LoginPage: React.FC = () => {
       redirectUser(user.role);
     } catch (err: any) {
       setError(err.message || 'Invalid email or password');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleQuickLogin = async (role: 'student' | 'kitchen' | 'admin') => {
-    setError(null);
-    setIsSubmitting(true);
-    try {
-      const user = await quickLogin(role);
-      redirectUser(user.role);
-    } catch (err: any) {
-      setError(err.message || 'Quick login failed');
     } finally {
       setIsSubmitting(false);
     }
@@ -62,8 +49,8 @@ export const LoginPage: React.FC = () => {
           <div className="w-12 h-12 rounded-2xl bg-brand-500 text-white flex items-center justify-center mx-auto shadow-md shadow-brand-500/30">
             <UtensilsCrossed className="w-6 h-6" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tight">Welcome to CampusBite</h2>
-          <p className="text-xs text-slate-500">Sign in to access student menu, kitchen queue, or admin tools</p>
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">Welcome Back</h2>
+          <p className="text-xs text-slate-500">Sign in to your CampusBite account</p>
         </div>
 
         {/* Error Alert */}
@@ -87,7 +74,7 @@ export const LoginPage: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="student@campusbite.local"
+                placeholder="name@college.edu"
                 className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all"
               />
             </div>
@@ -119,42 +106,11 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Demo 1-Click Credentials Helper */}
-        <div className="pt-4 border-t border-slate-100">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block text-center mb-3">
-            Quick-Fill Demo Credentials
-          </span>
-
-          <div className="grid grid-cols-3 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('student')}
-              className="py-2 px-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold transition-colors text-center"
-            >
-              🎓 Student
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('kitchen')}
-              className="py-2 px-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold transition-colors text-center"
-            >
-              👨‍🍳 Kitchen
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('admin')}
-              className="py-2 px-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold transition-colors text-center"
-            >
-              ⚡ Admin
-            </button>
-          </div>
-        </div>
-
         {/* Footer Link */}
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-xs text-slate-500 pt-2 border-t border-slate-100">
           New to CampusBite?{' '}
           <Link to="/register" className="text-brand-600 font-bold hover:underline">
-            Create a student account
+            Create an account
           </Link>
         </p>
       </div>
