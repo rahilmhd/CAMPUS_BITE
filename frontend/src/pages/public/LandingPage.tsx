@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext.js';
 import { FoodService } from '../../services/food.service.js';
 import { FoodItem } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
+import { CinematicBurgerHero } from '../../components/common/CinematicBurgerHero.js';
 import { UtensilsCrossed, ArrowRight, Clock, Bell, Sparkles } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -35,16 +36,16 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="space-y-16 pb-20">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden pt-12 pb-16 lg:pt-20 lg:pb-24">
+      {/* Hero Section with Master Cinematic Burger Visuals */}
+      <section className="relative overflow-hidden pt-8 pb-14 lg:pt-16 lg:pb-20">
         {/* Atmospheric Orange Ambient Light */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[350px] bg-brand-500/[0.12] rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-brand-500/[0.14] rounded-full blur-[120px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-bold tracking-wide">
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/30 text-brand-400 text-xs font-bold tracking-wide shadow-glow-orange-sm">
                 <Sparkles className="w-3.5 h-3.5 text-brand-400" />
                 <span>Smart Campus Food Ordering</span>
               </div>
@@ -57,7 +58,7 @@ export const LandingPage: React.FC = () => {
               </h1>
 
               <p className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed">
-                Pre-order meals from the campus canteen, skip the lines, and pick up your food fresh, hot, and ready.
+                Pre-order hot sizzled meals from the campus canteen, skip the lines, and pick up your food fresh, hot, and ready.
               </p>
 
               {/* Action Buttons */}
@@ -79,43 +80,28 @@ export const LandingPage: React.FC = () => {
                   </Link>
                 )}
               </div>
+
+              {/* Quick Status Stats */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-4 border-t border-white/[0.08]">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-glow-sm animate-pulse"></span>
+                  <span className="text-xs font-bold text-slate-300">Canteen Grill Open</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">Avg. Prep:</span>
+                  <span className="text-xs font-bold text-brand-400">8–12 Mins</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">Live Queue:</span>
+                  <span className="text-xs font-bold text-amber-400">Fast Counter</span>
+                </div>
+              </div>
             </div>
 
-            {/* Right 3D Showcase Card */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-md card-3d p-6 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-glow-sm"></span>
-                    <span className="text-xs font-bold text-slate-200">Canteen Counter Open</span>
-                  </div>
-                  <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">
-                    Live Ordering
-                  </span>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-dark-elevated/70 border border-white/[0.06] flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-2xl shadow-glow-orange-sm">
-                    🍲
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-bold text-white">Daily Fresh Specials</h3>
-                    <p className="text-xs text-slate-400">Cooked to order by campus chefs</p>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-gradient-to-r from-brand-950/40 to-dark-elevated border border-brand-500/30 flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] text-slate-400 block font-medium">Avg. Wait Time</span>
-                    <span className="text-sm font-bold text-brand-400">Under 10 mins</span>
-                  </div>
-                  <Link
-                    to="/student/menu"
-                    className="text-xs font-bold text-brand-400 hover:text-brand-300 flex items-center gap-1 transition-colors"
-                  >
-                    Explore Menu <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                </div>
+            {/* Right Cinematic Burger Video Stage */}
+            <div className="lg:col-span-6 flex justify-center">
+              <div className="w-full max-w-lg">
+                <CinematicBurgerHero variant="hero" />
               </div>
             </div>
           </div>
