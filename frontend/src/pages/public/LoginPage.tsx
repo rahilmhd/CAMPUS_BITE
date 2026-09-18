@@ -12,6 +12,18 @@ export const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
+
+  React.useEffect(() => {
+    // Force clear inputs on mount to ensure clean blank fields
+    setEmail('');
+    setPassword('');
+    // Lift readOnly shortly after mount to allow user interaction while bypassing browser autofill
+    const timer = setTimeout(() => {
+      setReadOnly(false);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,7 +77,25 @@ export const LoginPage: React.FC = () => {
         )}
 
         {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
+          {/* Hidden inputs to capture aggressive browser autofill */}
+          <input
+            type="text"
+            name="prevent_autofill_email"
+            id="prevent_autofill_email"
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+          <input
+            type="password"
+            name="prevent_autofill_password"
+            id="prevent_autofill_password"
+            style={{ display: 'none' }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+
           <div>
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               Email Address
@@ -74,7 +104,12 @@ export const LoginPage: React.FC = () => {
               <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="email"
+                id="login-email"
+                name="campus_login_email"
                 required
+                autoComplete="new-password"
+                readOnly={readOnly}
+                onFocus={() => setReadOnly(false)}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@college.edu"
@@ -91,7 +126,12 @@ export const LoginPage: React.FC = () => {
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="password"
+                id="login-password"
+                name="campus_login_password"
                 required
+                autoComplete="new-password"
+                readOnly={readOnly}
+                onFocus={() => setReadOnly(false)}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
