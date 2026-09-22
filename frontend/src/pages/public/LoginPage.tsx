@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
 import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
-import { UtensilsCrossed, Lock, Mail, AlertCircle, Sparkles } from 'lucide-react';
+import { UtensilsCrossed, Lock, Mail, AlertCircle } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();
@@ -62,39 +62,22 @@ export const LoginPage: React.FC = () => {
       {/* 5-Star Luxury Division Bar */}
       <div className="max-w-6xl w-full hotel-division-bar p-6 sm:p-10 lg:p-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Left: Luxury Blended Burger Showcase */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
-            <div className="space-y-2 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/25 text-brand-400 text-[11px] font-black uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-brand-400" />
-                <span>5-Star Reserve Dining • Fresh Daily</span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                Chef's Master Smash Burger
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-lg leading-relaxed">
-                Charcoal-grilled double smash patties, dripping aged cheddar, and house-pickled relish on golden toasted sesame brioche.
-              </p>
+          {/* Left: Blended Burger Showcase with Website Name */}
+          <div className="lg:col-span-7 flex flex-col items-center lg:items-start justify-center space-y-5">
+            <div className="text-center lg:text-left">
+              <Link to="/" className="inline-flex items-center gap-3 group">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 text-white flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
+                  <UtensilsCrossed className="w-6 h-6" />
+                </div>
+                <span className="text-3xl sm:text-4xl font-black tracking-tight text-white">
+                  Campus<span className="bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent">Bite</span>
+                </span>
+              </Link>
             </div>
 
             {/* Dynamic Blended Burger (Animation ONLY on the burger picture) */}
-            <div className="py-2">
+            <div className="w-full flex justify-center py-2">
               <HeroBurgerShowcase size="compact" />
-            </div>
-
-            <div className="hidden sm:grid grid-cols-3 gap-3 pt-2 border-t border-white/[0.08]">
-              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
-                <span className="text-xs font-black text-brand-400 block">Flame-Grilled</span>
-                <span className="text-[10px] text-slate-400">Charcoal sizzled</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
-                <span className="text-xs font-black text-amber-400 block">Zero Waiting</span>
-                <span className="text-[10px] text-slate-400">Mobile priority pickup</span>
-              </div>
-              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
-                <span className="text-xs font-black text-emerald-400 block">100% Quality</span>
-                <span className="text-[10px] text-slate-400">Prime ingredients</span>
-              </div>
             </div>
           </div>
 

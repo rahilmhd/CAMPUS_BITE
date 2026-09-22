@@ -5,7 +5,7 @@ import { FoodService } from '../../services/food.service.js';
 import { FoodItem } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
 import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
-import { UtensilsCrossed, ArrowRight, Clock, Bell, Sparkles } from 'lucide-react';
+import { UtensilsCrossed, ArrowRight, Clock, Bell } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
   const { user } = useAuth();
@@ -47,11 +47,6 @@ export const LandingPage: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
               {/* Left Content: The Writings Portrayed with the Burger */}
               <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-                <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/25 text-brand-400 text-xs font-bold tracking-wider uppercase shadow-sm">
-                  <Sparkles className="w-3.5 h-3.5 text-brand-400" />
-                  <span>Artisanal Campus Dining • Reserve Cut</span>
-                </div>
-
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
                   Fresh Gourmet Food,{' '}
                   <span className="bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent">
@@ -81,22 +76,6 @@ export const LandingPage: React.FC = () => {
                       Sign In <ArrowRight className="w-4 h-4 text-brand-400" />
                     </Link>
                   )}
-                </div>
-
-                {/* 5-Star Status Tags */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-5 border-t border-white/[0.08] text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-glow-sm animate-pulse" />
-                    <span className="font-bold text-slate-200">Live Kitchen Open</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-slate-400">
-                    <span>Average Preparation:</span>
-                    <strong className="text-brand-400">8–10 Mins</strong>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-slate-400">
-                    <span>Counter Service:</span>
-                    <strong className="text-amber-400">Priority Pass</strong>
-                  </div>
                 </div>
               </div>
 
