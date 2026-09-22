@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext.js';
 import { FoodService } from '../../services/food.service.js';
 import { FoodItem } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
-import { CinematicBurgerHero } from '../../components/common/CinematicBurgerHero.js';
+import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
 import { UtensilsCrossed, ArrowRight, Clock, Bell, Sparkles } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -36,7 +36,7 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="space-y-16 pb-20">
-      {/* Hero Section with Master Cinematic Burger Visuals */}
+      {/* Hero Section with Master 3D Dynamic Burger Visuals */}
       <section className="relative overflow-hidden pt-8 pb-14 lg:pt-16 lg:pb-20">
         {/* Atmospheric Orange Ambient Light */}
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-brand-500/[0.14] rounded-full blur-[120px] pointer-events-none"></div>
@@ -98,11 +98,9 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Cinematic Burger Video Stage */}
-            <div className="lg:col-span-6 flex justify-center">
-              <div className="w-full max-w-lg">
-                <CinematicBurgerHero variant="hero" />
-              </div>
+            {/* Right Dynamic 3D Burger Showcase */}
+            <div className="lg:col-span-6 flex justify-center items-center">
+              <HeroBurgerShowcase />
             </div>
           </div>
         </div>
