@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
-import { CinematicBurgerHero } from '../../components/common/CinematicBurgerHero.js';
-import { UtensilsCrossed, Lock, Mail, AlertCircle } from 'lucide-react';
+import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
+import { UtensilsCrossed, Lock, Mail, AlertCircle, Sparkles } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();
@@ -55,34 +55,52 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-10 sm:py-14 relative overflow-hidden">
-      {/* Ambient Orange Glow */}
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-8 sm:py-12 relative overflow-hidden">
+      {/* Subtle Ambient Orange Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-brand-500/[0.10] rounded-full blur-[140px] pointer-events-none"></div>
 
-      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
-        {/* Left: Cinematic Burger Video Showcase */}
-        <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
-          <CinematicBurgerHero variant="split" />
+      {/* 5-Star Luxury Division Bar */}
+      <div className="max-w-6xl w-full hotel-division-bar p-6 sm:p-10 lg:p-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left: Luxury Blended Burger Showcase */}
+          <div className="lg:col-span-7 flex flex-col justify-center space-y-4">
+            <div className="space-y-2 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-500/10 border border-brand-500/25 text-brand-400 text-[11px] font-black uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+                <span>5-Star Reserve Dining • Fresh Daily</span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Chef's Master Smash Burger
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 max-w-lg leading-relaxed">
+                Charcoal-grilled double smash patties, dripping aged cheddar, and house-pickled relish on golden toasted sesame brioche.
+              </p>
+            </div>
 
-          <div className="hidden sm:grid grid-cols-3 gap-3 pt-1">
-            <div className="p-3 rounded-2xl bg-dark-card/80 border border-white/[0.08] text-center backdrop-blur-sm">
-              <span className="text-xs font-black text-brand-400 block">Flame-Grilled</span>
-              <span className="text-[10px] text-slate-400">Charcoal sizzled</span>
+            {/* Dynamic Blended Burger (Animation ONLY on the burger picture) */}
+            <div className="py-2">
+              <HeroBurgerShowcase size="compact" />
             </div>
-            <div className="p-3 rounded-2xl bg-dark-card/80 border border-white/[0.08] text-center backdrop-blur-sm">
-              <span className="text-xs font-black text-amber-400 block">Zero Waiting</span>
-              <span className="text-[10px] text-slate-400">Fast counter pickup</span>
-            </div>
-            <div className="p-3 rounded-2xl bg-dark-card/80 border border-white/[0.08] text-center backdrop-blur-sm">
-              <span className="text-xs font-black text-emerald-400 block">Chef Crafted</span>
-              <span className="text-[10px] text-slate-400">100% Quality taste</span>
+
+            <div className="hidden sm:grid grid-cols-3 gap-3 pt-2 border-t border-white/[0.08]">
+              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
+                <span className="text-xs font-black text-brand-400 block">Flame-Grilled</span>
+                <span className="text-[10px] text-slate-400">Charcoal sizzled</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
+                <span className="text-xs font-black text-amber-400 block">Zero Waiting</span>
+                <span className="text-[10px] text-slate-400">Mobile priority pickup</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-dark-card/60 border border-white/[0.06] text-center">
+                <span className="text-xs font-black text-emerald-400 block">100% Quality</span>
+                <span className="text-[10px] text-slate-400">Prime ingredients</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right: 3D Login Card */}
-        <div className="lg:col-span-5 flex justify-center">
-          <div className="w-full max-w-md space-y-6 card-3d p-8 sm:p-10">
+          {/* Right: 3D Login Card */}
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="w-full max-w-md space-y-6 card-3d p-8 sm:p-10 border border-white/10">
             {/* Header */}
             <div className="text-center space-y-2">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 text-white flex items-center justify-center mx-auto shadow-lg shadow-brand-500/30">
@@ -184,5 +202,6 @@ export const LoginPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
