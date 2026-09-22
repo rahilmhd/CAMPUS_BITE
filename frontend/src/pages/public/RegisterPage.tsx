@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.js';
-import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
 import { UtensilsCrossed, Lock, Mail, User, Phone, AlertCircle } from 'lucide-react';
 
 export const RegisterPage: React.FC = () => {
@@ -44,154 +43,133 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-8 sm:py-12 relative overflow-hidden">
       {/* Ambient Orange Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-brand-500/[0.10] rounded-full blur-[140px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-brand-500/[0.10] rounded-full blur-[140px] pointer-events-none"></div>
 
-      {/* 5-Star Luxury Division Bar */}
-      <div className="max-w-6xl w-full hotel-division-bar p-6 sm:p-10 lg:p-12 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          {/* Left: Blended Burger Showcase with Website Name */}
-          <div className="lg:col-span-6 flex flex-col items-center lg:items-start justify-center space-y-5">
-            <div className="text-center lg:text-left">
-              <Link to="/" className="inline-flex items-center gap-3 group">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 text-white flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
-                  <UtensilsCrossed className="w-6 h-6" />
-                </div>
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-white">
-                  Campus<span className="bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent">Bite</span>
-                </span>
-              </Link>
+      {/* Centered 3D Registration Card with Website Theme */}
+      <div className="w-full max-w-md space-y-5 card-3d p-8 sm:p-10 border border-white/10 relative z-10">
+        <div className="text-center space-y-3">
+          <Link to="/" className="inline-flex items-center gap-2.5 group">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 text-white flex items-center justify-center shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform">
+              <UtensilsCrossed className="w-6 h-6" />
             </div>
-
-            {/* Dynamic Blended Burger (Animation ONLY on the burger picture) */}
-            <div className="w-full flex justify-center py-2">
-              <HeroBurgerShowcase size="compact" />
-            </div>
-          </div>
-
-          {/* Right: 3D Registration Card */}
-          <div className="lg:col-span-6 flex justify-center">
-            <div className="w-full max-w-md space-y-5 card-3d p-8 sm:p-10 border border-white/10">
-            <div className="text-center space-y-2">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 text-white flex items-center justify-center mx-auto shadow-lg shadow-brand-500/30">
-                <UtensilsCrossed className="w-6 h-6" />
-              </div>
-              <h2 className="text-2xl font-black text-white tracking-tight">Create Account</h2>
-              <p className="text-xs text-slate-400">Join CampusBite to order and track food from your phone</p>
-            </div>
-
-            {error && (
-              <div className="p-3.5 rounded-2xl bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="text"
-                    required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Rahul Sharma"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                  College Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="rahul@college.edu"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                  Mobile Number (Optional)
-                </label>
-                <div className="relative">
-                  <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 9876543210"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Password
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
-                    Confirm
-                  </label>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input
-                      type="password"
-                      required
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full btn-primary py-3 text-sm font-bold mt-2 shadow-glow-orange-sm"
-              >
-                {isSubmitting ? 'Creating Account...' : 'Register'}
-              </button>
-            </form>
-
-            <p className="text-center text-xs text-slate-400 pt-2 border-t border-white/[0.07]">
-              Already registered?{' '}
-              <Link to="/login" className="text-brand-400 font-bold hover:text-brand-300 hover:underline">
-                Sign in here
-              </Link>
-            </p>
-          </div>
+            <span className="text-2xl font-black tracking-tight text-white">
+              Campus<span className="bg-gradient-to-r from-brand-400 to-amber-400 bg-clip-text text-transparent">Bite</span>
+            </span>
+          </Link>
+          <h2 className="text-2xl font-black text-white tracking-tight pt-1">Create Account</h2>
+          <p className="text-xs text-slate-400">Join CampusBite to order and track food from your phone</p>
         </div>
+
+        {error && (
+          <div className="p-3.5 rounded-2xl bg-rose-950/60 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-rose-400 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          <div>
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              Full Name
+            </label>
+            <div className="relative">
+              <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Rahul Sharma"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              College Email Address
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="rahul@college.edu"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+              Mobile Number (Optional)
+            </label>
+            <div className="relative">
+              <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 9876543210"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                Confirm
+              </label>
+              <div className="relative">
+                <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-dark-elevated border border-white/10 text-sm text-white placeholder-slate-500 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all"
+                />
+              </div>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full btn-primary py-3 text-sm font-bold mt-2 shadow-glow-orange-sm"
+          >
+            {isSubmitting ? 'Creating Account...' : 'Register'}
+          </button>
+        </form>
+
+        <p className="text-center text-xs text-slate-400 pt-2 border-t border-white/[0.07]">
+          Already registered?{' '}
+          <Link to="/login" className="text-brand-400 font-bold hover:text-brand-300 hover:underline">
+            Sign in here
+          </Link>
+        </p>
       </div>
     </div>
-  </div>
-);
+  );
 };
