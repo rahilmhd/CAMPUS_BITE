@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext.js';
 import { FoodService } from '../../services/food.service.js';
 import { FoodItem } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
-import { HeroBurgerShowcase } from '../../components/home/HeroBurgerShowcase.js';
+import { PictureHeroBlock } from '../../components/home/PictureHeroBlock.js';
 import { UtensilsCrossed, ArrowRight, Clock, Bell } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -36,55 +36,10 @@ export const LandingPage: React.FC = () => {
 
   return (
     <div className="space-y-16 pb-20">
-      {/* Hero Section: 5-Star Luxury Division Bar */}
+      {/* Hero Section: Unified Picture Hero Block (Writings inside extended black background on left, burger on right) */}
       <section className="relative pt-6 pb-12 lg:pt-10 lg:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* The 5-Star Hotel Division Bar with 3D Gradient Shadows */}
-          <div className="hotel-division-bar p-8 sm:p-12 lg:p-14">
-            {/* Subtle Luxury Ambient Radial Glow */}
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[480px] h-[480px] bg-brand-500/[0.12] rounded-full blur-[130px] pointer-events-none" />
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
-              {/* Left Content: The Writings Portrayed with the Burger */}
-              <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12]">
-                  Fresh Gourmet Food,{' '}
-                  <span className="bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent">
-                    Zero Waiting.
-                  </span>
-                </h1>
-
-                <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
-                  Experience handcrafted double smash patties, Wisconsin cheddar melt, and fresh culinary specials prepared to order. Skip counter queues with instant student mobile checkout.
-                </p>
-
-                {/* 3D Action Buttons */}
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-                  <Link
-                    to={getDashboardLink()}
-                    className="btn-primary py-3.5 px-8 text-sm sm:text-base flex items-center gap-2.5 shadow-glow-orange"
-                  >
-                    <UtensilsCrossed className="w-5 h-5" />
-                    {user ? 'View Dining Menu' : 'Explore Menu'}
-                  </Link>
-
-                  {!user && (
-                    <Link
-                      to="/login"
-                      className="btn-secondary py-3.5 px-7 text-sm flex items-center gap-2"
-                    >
-                      Sign In <ArrowRight className="w-4 h-4 text-brand-400" />
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              {/* Right: The Blended Burger Picture (Animation works ONLY on the burger picture) */}
-              <div className="lg:col-span-5 flex justify-center items-center">
-                <HeroBurgerShowcase size="hero" />
-              </div>
-            </div>
-          </div>
+          <PictureHeroBlock />
         </div>
       </section>
 
