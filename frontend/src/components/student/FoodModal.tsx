@@ -7,9 +7,10 @@ import { Clock, Plus, Minus, X, CheckCircle2, ShieldAlert } from 'lucide-react';
 interface FoodModalProps {
   food: FoodItem;
   onClose: () => void;
+  showAddToCart?: boolean;
 }
 
-export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose }) => {
+export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose, showAddToCart = true }) => {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -85,7 +86,7 @@ export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose }) => {
           </div>
 
           {/* Quantity & CTA */}
-          {food.available && (
+          {showAddToCart && food.available && (
             <div className="pt-4 border-t border-white/[0.07] flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 bg-dark-elevated rounded-2xl p-1.5 border border-white/10">
                 <button

@@ -5,7 +5,12 @@ import { useCart } from '../../context/CartContext.js';
 import { Clock, Plus, Eye, AlertCircle } from 'lucide-react';
 import { FoodModal } from './FoodModal.js';
 
-export const FoodCard: React.FC<{ food: FoodItem }> = ({ food }) => {
+interface FoodCardProps {
+  food: FoodItem;
+  showAddToCart?: boolean;
+}
+
+export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }) => {
   const { addToCart } = useCart();
   const [modalOpen, setModalOpen] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
@@ -83,26 +88,34 @@ export const FoodCard: React.FC<{ food: FoodItem }> = ({ food }) => {
               <span>~{food.preparationTime} mins</span>
             </div>
 
-            {food.available ? (
-              <button
-                onClick={handleAdd}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
-                  justAdded
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30'
-                    : 'bg-brand-500/15 hover:bg-brand-500 text-brand-400 hover:text-white border border-brand-500/30 hover:border-brand-500 active:scale-95 shadow-sm'
-                }`}
-              >
-                <Plus className="w-3.5 h-3.5" />
-                {justAdded ? 'Added! ✓' : 'Add to Cart'}
-              </button>
-            ) : (
-              <span className="text-xs text-rose-400/80 font-semibold">Unavailable</span>
-            )}
+            {showAddToCart ? (
+              food.available ? (
+                <button
+                  onClick={handleAdd}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
+                    justAdded
+                      ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30'
+                      : 'bg-brand-500/15 hover:bg-brand-500 text-brand-400 hover:text-white border border-brand-500/30 hover:border-brand-500 active:scale-95 shadow-sm'
+                  }`}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  {justAdded ? 'Added! ✓' : 'Add to Cart'}
+                </button>
+              ) : (
+                <span className="text-xs text-rose-400/80 font-semibold">Unavailable</span>
+              )
+            ) : null}
           </div>
         </div>
       </div>
 
-      {modalOpen && <FoodModal food={food} onClose={() => setModalOpen(false)} />}
+      {modalOpen && (
+        <FoodModal
+          food={food}
+          onClose={() => setModalOpen(false)}
+          showAddToCart={showAddToCart}
+        />
+      )}
     </>
   );
 };
