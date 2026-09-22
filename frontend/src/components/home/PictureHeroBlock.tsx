@@ -56,10 +56,10 @@ export const PictureHeroBlock: React.FC = () => {
       <div className="w-full grid grid-cols-1 lg:grid-cols-12 items-center relative z-20 min-h-[540px] lg:min-h-[580px] xl:min-h-[620px]">
         {/* Left Side: Writings Written in the Interface of the Picture on Extended Black Background */}
         <div className="lg:col-span-7 p-7 sm:p-10 lg:p-14 xl:p-16 flex flex-col justify-center space-y-6 text-center lg:text-left relative z-20">
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.12] drop-shadow-md">
-            Fresh Gourmet Food,{' '}
-            <span className="bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent">
-              Zero Waiting.
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.14] drop-shadow-md">
+            First we eat, then we do everything else.{' '}
+            <span className="block mt-1 sm:mt-2 bg-gradient-to-r from-brand-400 via-brand-500 to-amber-400 bg-clip-text text-transparent">
+              Easy & Tasty.
             </span>
           </h1>
 
