@@ -60,6 +60,16 @@ export class FoodController {
     }
   }
 
+  static async updateStock(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { stockQuantity } = req.body;
+      const updated = await FoodService.updateStock(req.params.id, Number(stockQuantity));
+      ApiResponse.success(res, updated, `Stock quantity updated to ${updated.stockQuantity} (${updated.available ? 'Available' : 'Sold Out'})`);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await FoodService.deleteFood(req.params.id);

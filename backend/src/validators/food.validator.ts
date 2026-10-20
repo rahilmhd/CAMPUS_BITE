@@ -47,3 +47,10 @@ export const createCategorySchema = z.object({
     description: z.string().optional(),
   }),
 });
+
+export const updateStockSchema = z.object({
+  body: z.object({
+    stockQuantity: z.number().int({ message: 'Stock quantity must be an integer' }).nonnegative({ message: 'Stock quantity cannot be negative' }),
+  }),
+});
+

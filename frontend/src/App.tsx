@@ -43,8 +43,8 @@ import { ReportsPage } from './pages/admin/ReportsPage.js';
 export const App: React.FC = () => {
   return (
     <AuthProvider>
-      <CartProvider>
-        <SocketProvider>
+      <SocketProvider>
+        <CartProvider>
           <NotificationProvider>
             <BrowserRouter>
               <div className="min-h-screen flex flex-col bg-dark-bg text-slate-100 selection:bg-brand-500 selection:text-white">
@@ -195,8 +195,8 @@ export const App: React.FC = () => {
               </div>
             </BrowserRouter>
           </NotificationProvider>
-        </SocketProvider>
-      </CartProvider>
+        </CartProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 };

@@ -1,6 +1,7 @@
 import { prisma } from '../config/index.js';
 import { OrderStatus, PaymentStatus, PaymentMethod, Role } from '../types/index.js';
 import { getSocketIO } from '../socket/socket.handler.js';
+import { FoodService } from './food.service.js';
 
 export interface CreateOrderItemInput {
   foodItemId: string;
@@ -44,8 +45,8 @@ export class OrderService {
         throw { statusCode: 404, message: `Food item not found: ${item.foodItemId}` };
       }
 
-      if (!food.available) {
-        throw { statusCode: 400, message: `"${food.name}" is currently unavailable for order.` };
+      if (!food.available || food.stockQuantity <= 0) {
+        throw { statusCode: 400, message: `"${food.name}" is sold out.` };
       }
 
       if (item.quantity <= 0) {
@@ -73,17 +74,48 @@ export class OrderService {
 
     const parsedPickupTime = input.pickupTime ? new Date(input.pickupTime) : new Date(Date.now() + 20 * 60000);
 
-    // Database transaction: Create order + items + payment + status history
-    const order = await prisma.$transaction(async (tx) => {
-      // Decrement stock
+    // Database transaction: Deduct stock, dynamically update availability, and create order
+    const { order, updatedFoods } = await prisma.$transaction(async (tx) => {
+      const updatedFoodsList: Array<{ id: string; name: string; stockQuantity: number; available: boolean }> = [];
+
+      // Re-fetch and deduct stock in real-time inside transaction to prevent race conditions & overselling
       for (const item of verifiedOrderItems) {
-        await tx.foodItem.update({
+        const currentFood = await tx.foodItem.findUnique({
           where: { id: item.foodItemId },
+        });
+
+        if (!currentFood) {
+          throw { statusCode: 404, message: `Food item not found: ${item.foodItemId}` };
+        }
+
+        if (!currentFood.available || currentFood.stockQuantity <= 0) {
+          throw { statusCode: 400, message: `"${currentFood.name}" is sold out.` };
+        }
+
+        if (currentFood.stockQuantity < item.quantity) {
+          throw {
+            statusCode: 400,
+            message: `Insufficient stock for "${currentFood.name}". Available: ${currentFood.stockQuantity}, requested: ${item.quantity}`,
+          };
+        }
+
+        const newStock = currentFood.stockQuantity - item.quantity;
+        // Dynamically update status: available if stock > 0, immediately sold out if hits 0
+        const isAvailable = newStock > 0;
+
+        const updated = await tx.foodItem.update({
+          where: { id: currentFood.id },
           data: {
-            stockQuantity: {
-              decrement: item.quantity,
-            },
+            stockQuantity: newStock,
+            available: isAvailable,
           },
+        });
+
+        updatedFoodsList.push({
+          id: updated.id,
+          name: updated.name,
+          stockQuantity: updated.stockQuantity,
+          available: updated.available,
         });
       }
 
@@ -128,8 +160,25 @@ export class OrderService {
         },
       });
 
-      return createdOrder;
+      return { order: createdOrder, updatedFoods: updatedFoodsList };
     });
+
+    // Real-time WebSocket broadcasts:
+    // 1. Immediately broadcast updated stock quantity and availability to all connected clients
+    for (const food of updatedFoods) {
+      FoodService.emitStockUpdated(food);
+    }
+
+    // 2. Broadcast order creation to kitchen & admin
+    try {
+      const io = getSocketIO();
+      if (io) {
+        io.to('kitchen').emit('order:created', order);
+        io.to('admin').emit('order:created', order);
+      }
+    } catch (e) {
+      console.warn('Real-time order emit warning:', e);
+    }
 
     return order;
   }

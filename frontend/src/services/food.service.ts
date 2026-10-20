@@ -42,6 +42,11 @@ export const FoodService = {
     return res.data;
   },
 
+  async updateStock(id: string, stockQuantity: number): Promise<FoodItem> {
+    const res = (await api.patch(`/foods/${id}/stock`, { stockQuantity })) as any;
+    return res.data;
+  },
+
   async delete(id: string): Promise<any> {
     const res = (await api.delete(`/foods/${id}`)) as any;
     return res.data;

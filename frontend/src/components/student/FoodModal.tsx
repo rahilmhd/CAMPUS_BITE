@@ -15,8 +15,11 @@ export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose, showAddToCa
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
+  const isSoldOut = !food.available || food.stockQuantity <= 0;
+  const maxAvailable = Math.max(0, food.stockQuantity);
+
   const handleAddToCart = () => {
-    if (!food.available) return;
+    if (isSoldOut) return;
     addToCart(food, quantity);
     setAdded(true);
     setTimeout(() => {
@@ -39,11 +42,16 @@ export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose, showAddToCa
           >
             <X className="w-5 h-5" />
           </button>
-          <div className="absolute top-4 left-4 flex gap-2">
+          <div className="absolute top-4 left-4 flex flex-wrap gap-2">
             <DietaryBadge type={food.dietaryType} />
             {food.category && (
               <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-dark-surface/90 backdrop-blur-md text-slate-200 border border-white/10 shadow-sm">
                 {food.category.name}
+              </span>
+            )}
+            {isSoldOut && (
+              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-950/90 text-rose-300 border border-rose-500/40">
+                Sold Out
               </span>
             )}
           </div>
@@ -72,49 +80,69 @@ export const FoodModal: React.FC<FoodModalProps> = ({ food, onClose, showAddToCa
             <p className="text-xs text-slate-300 leading-normal">{food.ingredients}</p>
           </div>
 
-          {/* Stock / Availability */}
-          <div className="flex items-center gap-2 text-xs font-medium">
-            {food.available ? (
-              <span className="text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" /> Available right now in canteen
+          {/* Stock / Availability Status Banner */}
+          <div className="flex items-center gap-2 text-xs font-semibold">
+            {isSoldOut ? (
+              <span className="w-full px-3 py-2 rounded-xl bg-rose-950/70 border border-rose-500/40 text-rose-300 flex items-center gap-2">
+                <ShieldAlert className="w-4 h-4 text-rose-400 flex-shrink-0" />
+                <span>Currently Sold Out — Ordering is disabled until restocked by kitchen</span>
+              </span>
+            ) : food.stockQuantity <= 5 ? (
+              <span className="w-full px-3 py-2 rounded-xl bg-amber-950/70 border border-amber-500/40 text-amber-300 flex items-center gap-2 animate-pulse">
+                <Clock className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <span>Limited stock remaining: Only {food.stockQuantity} portion{food.stockQuantity === 1 ? '' : 's'} available!</span>
               </span>
             ) : (
-              <span className="text-rose-400 flex items-center gap-1">
-                <ShieldAlert className="w-4 h-4" /> Item is currently sold out
+              <span className="w-full px-3 py-2 rounded-xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span>Fresh & In Stock: {food.stockQuantity} portions ready in kitchen</span>
               </span>
             )}
           </div>
 
           {/* Quantity & CTA */}
-          {showAddToCart && food.available && (
+          {showAddToCart && (
             <div className="pt-4 border-t border-white/[0.07] flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 bg-dark-elevated rounded-2xl p-1.5 border border-white/10">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-8 h-8 rounded-xl bg-dark-card text-white hover:bg-dark-highlight flex items-center justify-center transition-all border border-white/5 active:scale-95"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <span className="w-6 text-center font-bold text-sm text-white">{quantity}</span>
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="w-8 h-8 rounded-xl bg-dark-card text-white hover:bg-dark-highlight flex items-center justify-center transition-all border border-white/5 active:scale-95"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
+              {!isSoldOut ? (
+                <>
+                  <div className="flex items-center gap-3 bg-dark-elevated rounded-2xl p-1.5 border border-white/10">
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      disabled={quantity <= 1}
+                      className="w-8 h-8 rounded-xl bg-dark-card text-white hover:bg-dark-highlight disabled:opacity-40 flex items-center justify-center transition-all border border-white/5 active:scale-95"
+                    >
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="w-6 text-center font-bold text-sm text-white">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity((q) => Math.min(maxAvailable, q + 1))}
+                      disabled={quantity >= maxAvailable}
+                      className="w-8 h-8 rounded-xl bg-dark-card text-white hover:bg-dark-highlight disabled:opacity-40 flex items-center justify-center transition-all border border-white/5 active:scale-95"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                  </div>
 
-              <button
-                onClick={handleAddToCart}
-                disabled={added}
-                className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all ${
-                  added
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30'
-                    : 'btn-primary'
-                }`}
-              >
-                {added ? 'Added to Cart! ✓' : `Add to Cart • ₹${food.price * quantity}`}
-              </button>
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={added || isSoldOut}
+                    className={`flex-1 py-3 px-6 rounded-2xl font-bold text-sm transition-all ${
+                      added
+                        ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/30'
+                        : 'btn-primary'
+                    }`}
+                  >
+                    {added ? 'Added to Cart! ✓' : `Add to Cart • ₹${food.price * quantity}`}
+                  </button>
+                </>
+              ) : (
+                <button
+                  disabled
+                  className="w-full py-3 px-6 rounded-2xl font-bold text-sm bg-rose-950/40 text-rose-400 border border-rose-500/30 cursor-not-allowed"
+                >
+                  Item Sold Out • Ordering Disabled
+                </button>
+              )}
             </div>
           )}
         </div>

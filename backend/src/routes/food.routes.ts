@@ -3,7 +3,7 @@ import { FoodController } from '../controllers/food.controller.js';
 import { authenticate } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/role.middleware.js';
 import { validateRequest } from '../middleware/validate.middleware.js';
-import { createFoodSchema, updateFoodSchema, createCategorySchema } from '../validators/food.validator.js';
+import { createFoodSchema, updateFoodSchema, createCategorySchema, updateStockSchema } from '../validators/food.validator.js';
 import { Role } from '../types/index.js';
 
 const router = Router();
@@ -28,6 +28,14 @@ router.put(
   requireRole([Role.ADMIN]),
   validateRequest(updateFoodSchema),
   FoodController.update
+);
+
+router.patch(
+  '/:id/stock',
+  authenticate,
+  requireRole([Role.ADMIN, Role.KITCHEN_STAFF]),
+  validateRequest(updateStockSchema),
+  FoodController.updateStock
 );
 
 router.patch(

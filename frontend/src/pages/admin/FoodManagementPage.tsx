@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { FoodService } from '../../services/food.service.js';
 import { FoodItem, FoodCategory, DietaryType } from '../../types/index.js';
 import { DietaryBadge } from '../../components/common/DietaryBadge.js';
+import { useSocket } from '../../context/SocketContext.js';
 import {
   Plus,
+  Minus,
   Search,
   Edit2,
   Trash2,
@@ -11,9 +13,13 @@ import {
   XCircle,
   X,
   FolderPlus,
+  AlertCircle,
+  AlertTriangle,
+  Package,
 } from 'lucide-react';
 
 export const FoodManagementPage: React.FC = () => {
+  const { socket } = useSocket();
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const [categories, setCategories] = useState<FoodCategory[]>([]);
   const [search, setSearch] = useState('');
@@ -123,11 +129,61 @@ export const FoodManagementPage: React.FC = () => {
     }
   };
 
+  // Real-time WebSocket listener: Instantly updates food table when stock changes or purchases happen
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleStockUpdated = (data: { foodItemId: string; stockQuantity: number; available: boolean; name: string }) => {
+      setFoods((prev) =>
+        prev.map((f) =>
+          f.id === data.foodItemId
+            ? { ...f, stockQuantity: data.stockQuantity, available: data.available }
+            : f
+        )
+      );
+    };
+
+    socket.on('food:stock_updated', handleStockUpdated);
+    return () => {
+      socket.off('food:stock_updated', handleStockUpdated);
+    };
+  }, [socket]);
+
+  const handleUpdateStock = async (id: string, newStock: number) => {
+    const safeStock = Math.max(0, Math.floor(newStock));
+    // Optimistic state update
+    setFoods((prev) =>
+      prev.map((f) =>
+        f.id === id
+          ? {
+              ...f,
+              stockQuantity: safeStock,
+              available: safeStock > 0,
+            }
+          : f
+      )
+    );
+
+    try {
+      const updated = await FoodService.updateStock(id, safeStock);
+      setFoods((prev) =>
+        prev.map((f) =>
+          f.id === id
+            ? { ...f, stockQuantity: updated.stockQuantity, available: updated.available }
+            : f
+        )
+      );
+    } catch (e: any) {
+      alert(e.message || 'Failed to update stock quantity');
+      loadData();
+    }
+  };
+
   const handleToggleAvailability = async (id: string, current: boolean) => {
     try {
-      await FoodService.toggleAvailability(id, !current);
+      const updated = await FoodService.toggleAvailability(id, !current);
       setFoods((prev) =>
-        prev.map((f) => (f.id === id ? { ...f, available: !current } : f))
+        prev.map((f) => (f.id === id ? { ...f, available: updated.available, stockQuantity: updated.stockQuantity } : f))
       );
     } catch (e: any) {
       alert(e.message || 'Failed to change availability');
@@ -223,7 +279,8 @@ export const FoodManagementPage: React.FC = () => {
                 <th className="py-3.5 px-4">Diet</th>
                 <th className="py-3.5 px-4">Price</th>
                 <th className="py-3.5 px-4">Prep Time</th>
-                <th className="py-3.5 px-4">Stock Status</th>
+                <th className="py-3.5 px-4">Stock Management</th>
+                <th className="py-3.5 px-4">Live Status</th>
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -254,15 +311,78 @@ export const FoodManagementPage: React.FC = () => {
                   <td className="py-3 px-4 font-black text-brand-400">₹{food.price}</td>
                   <td className="py-3 px-4 text-slate-400">~{food.preparationTime}m</td>
                   <td className="py-3 px-4">
+                    <div className="flex flex-col gap-1.5">
+                      {/* Stock badge */}
+                      <div className="flex items-center gap-1.5">
+                        {food.stockQuantity <= 0 ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/80 border border-rose-500/40 text-rose-300">
+                            <AlertCircle className="w-3 h-3 text-rose-400" /> 0 Units (Sold Out)
+                          </span>
+                        ) : food.stockQuantity <= 5 ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/80 border border-amber-500/40 text-amber-300 animate-pulse">
+                            <AlertTriangle className="w-3 h-3 text-amber-400" /> {food.stockQuantity} Left (Low Stock)
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400" /> {food.stockQuantity} In Stock
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Quick stock adjustment controls */}
+                      <div className="flex items-center gap-1 bg-dark-elevated rounded-lg p-1 border border-white/10 w-fit">
+                        <button
+                          onClick={() => handleUpdateStock(food.id, food.stockQuantity - 1)}
+                          disabled={food.stockQuantity <= 0}
+                          className="w-6 h-6 rounded bg-dark-card hover:bg-dark-highlight disabled:opacity-30 text-white flex items-center justify-center font-bold text-xs transition-colors"
+                          title="Decrease stock by 1"
+                        >
+                          <Minus className="w-3 h-3" />
+                        </button>
+
+                        <span className="min-w-[28px] text-center font-mono font-bold text-white text-xs px-1">
+                          {food.stockQuantity}
+                        </span>
+
+                        <button
+                          onClick={() => handleUpdateStock(food.id, food.stockQuantity + 1)}
+                          className="w-6 h-6 rounded bg-dark-card hover:bg-dark-highlight text-white flex items-center justify-center font-bold text-xs transition-colors"
+                          title="Increase stock by 1"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+
+                        <button
+                          onClick={() => handleUpdateStock(food.id, food.stockQuantity + 10)}
+                          className="px-1.5 h-6 rounded bg-brand-500/15 hover:bg-brand-500 text-brand-300 hover:text-white font-bold text-[10px] transition-colors ml-1"
+                          title="Quick restock (+10 units)"
+                        >
+                          +10
+                        </button>
+
+                        {food.stockQuantity === 0 && (
+                          <button
+                            onClick={() => handleUpdateStock(food.id, 25)}
+                            className="px-2 h-6 rounded bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/30 text-emerald-300 hover:text-white font-bold text-[10px] transition-colors ml-1"
+                            title="Restock to 25 units"
+                          >
+                            Restock 25
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-3 px-4">
                     <button
                       onClick={() => handleToggleAvailability(food.id, food.available)}
-                      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold border transition-colors ${
-                        food.available
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border transition-colors ${
+                        food.available && food.stockQuantity > 0
                           ? 'bg-emerald-950/70 border-emerald-500/30 text-emerald-300 hover:bg-emerald-950'
                           : 'bg-rose-950/70 border-rose-500/30 text-rose-300 hover:bg-rose-950'
                       }`}
+                      title={food.available && food.stockQuantity > 0 ? 'Click to mark Sold Out' : 'Click to mark Available'}
                     >
-                      {food.available ? (
+                      {food.available && food.stockQuantity > 0 ? (
                         <>
                           <CheckCircle2 className="w-3 h-3" /> Available
                         </>
@@ -413,16 +533,59 @@ export const FoodManagementPage: React.FC = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-4 pt-2">
-                <label className="flex items-center gap-2 cursor-pointer font-bold text-slate-300">
+              <div className="grid grid-cols-2 gap-3 pt-2 border-t border-white/[0.06]">
+                <div>
+                  <label className="block font-bold text-slate-300 mb-1">
+                    Stock Quantity (Units)
+                  </label>
                   <input
-                    type="checkbox"
-                    checked={available}
-                    onChange={(e) => setAvailable(e.target.checked)}
-                    className="w-4 h-4 rounded text-brand-500 accent-brand-500"
+                    type="number"
+                    required
+                    min={0}
+                    value={stockQuantity}
+                    onChange={(e) => {
+                      const val = Math.max(0, parseInt(e.target.value, 10) || 0);
+                      setStockQuantity(val);
+                      if (val === 0) {
+                        setAvailable(false);
+                      } else if (val > 0 && !available) {
+                        setAvailable(true);
+                      }
+                    }}
+                    placeholder="e.g. 50"
+                    className="w-full px-3 py-2 rounded-xl bg-dark-elevated border border-white/10 text-white font-bold focus:border-brand-500"
                   />
-                  <span>Mark as Available in Canteen</span>
-                </label>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    {stockQuantity === 0
+                      ? '⚠️ Setting to 0 will immediately switch status to Sold Out.'
+                      : 'Stock available for real-time ordering.'}
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-300 mb-1">
+                    Live Ordering Status
+                  </label>
+                  <div className="h-[38px] flex items-center">
+                    <label className="flex items-center gap-2 cursor-pointer font-bold text-slate-300">
+                      <input
+                        type="checkbox"
+                        checked={available && stockQuantity > 0}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+                          setAvailable(isChecked);
+                          if (isChecked && stockQuantity <= 0) {
+                            setStockQuantity(10);
+                          }
+                        }}
+                        className="w-4 h-4 rounded text-brand-500 accent-brand-500"
+                      />
+                      <span className={available && stockQuantity > 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                        {available && stockQuantity > 0 ? 'Available for Order' : 'Sold Out / Ordering Disabled'}
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2">

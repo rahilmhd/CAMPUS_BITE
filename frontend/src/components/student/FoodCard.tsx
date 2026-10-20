@@ -15,9 +15,11 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }
   const [modalOpen, setModalOpen] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
+  const isSoldOut = !food.available || food.stockQuantity <= 0;
+
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!food.available) return;
+    if (isSoldOut) return;
     addToCart(food, 1);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1200);
@@ -27,8 +29,8 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }
     <>
       <div
         onClick={() => setModalOpen(true)}
-        className={`group card-3d overflow-hidden flex flex-col cursor-pointer ${
-          !food.available ? 'opacity-60 grayscale-[40%]' : ''
+        className={`group card-3d overflow-hidden flex flex-col cursor-pointer transition-all ${
+          isSoldOut ? 'opacity-70 grayscale-[30%]' : ''
         }`}
       >
         {/* Image Container */}
@@ -46,19 +48,32 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }
           </div>
 
           {/* Top Badges */}
-          <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+          <div className="absolute top-2.5 left-2.5 flex flex-wrap items-center gap-1.5">
             <DietaryBadge type={food.dietaryType} />
             {food.category && (
               <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-dark-surface/90 backdrop-blur-md text-slate-200 border border-white/10 shadow-sm">
                 {food.category.name}
               </span>
             )}
+            {isSoldOut ? (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-950/90 text-rose-300 border border-rose-500/40">
+                Sold Out
+              </span>
+            ) : food.stockQuantity <= 5 ? (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-950/90 text-amber-300 border border-amber-500/40 animate-pulse">
+                Only {food.stockQuantity} left!
+              </span>
+            ) : (
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/30">
+                {food.stockQuantity} in stock
+              </span>
+            )}
           </div>
 
           {/* Unavailable Overlay */}
-          {!food.available && (
-            <div className="absolute inset-0 bg-dark-bg/75 backdrop-blur-[2px] flex items-center justify-center">
-              <span className="px-3 py-1.5 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 font-bold text-xs uppercase tracking-wider flex items-center gap-1 shadow-lg">
+          {isSoldOut && (
+            <div className="absolute inset-0 bg-dark-bg/80 backdrop-blur-[2px] flex items-center justify-center">
+              <span className="px-3.5 py-1.5 rounded-xl bg-rose-950/90 border border-rose-500/50 text-rose-300 font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-xl">
                 <AlertCircle className="w-4 h-4 text-rose-400" /> Sold Out
               </span>
             </div>
@@ -89,7 +104,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }
             </div>
 
             {showAddToCart ? (
-              food.available ? (
+              !isSoldOut ? (
                 <button
                   onClick={handleAdd}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 transition-all ${
@@ -102,7 +117,9 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food, showAddToCart = true }
                   {justAdded ? 'Added! ✓' : 'Add to Cart'}
                 </button>
               ) : (
-                <span className="text-xs text-rose-400/80 font-semibold">Unavailable</span>
+                <span className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-rose-400 bg-rose-950/40 border border-rose-500/30">
+                  Sold Out
+                </span>
               )
             ) : null}
           </div>

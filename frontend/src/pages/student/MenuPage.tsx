@@ -3,9 +3,11 @@ import { FoodService } from '../../services/food.service.js';
 import { FoodItem, FoodCategory } from '../../types/index.js';
 import { FoodCard } from '../../components/student/FoodCard.js';
 import { FilterBar } from '../../components/student/FilterBar.js';
+import { useSocket } from '../../context/SocketContext.js';
 import { Utensils } from 'lucide-react';
 
 export const MenuPage: React.FC = () => {
+  const { socket } = useSocket();
   const [foods, setFoods] = useState<FoodItem[]>([]);
   const [categories, setCategories] = useState<FoodCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +55,26 @@ export const MenuPage: React.FC = () => {
     }, 250);
     return () => clearTimeout(timer);
   }, [searchQuery, selectedCategory, dietaryFilter, availableOnly, sortBy]);
+
+  // Real-time WebSocket listener: Dynamically updates food availability & stock count
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleStockUpdate = (data: { foodItemId: string; stockQuantity: number; available: boolean }) => {
+      setFoods((prev) =>
+        prev.map((item) =>
+          item.id === data.foodItemId
+            ? { ...item, stockQuantity: data.stockQuantity, available: data.available }
+            : item
+        )
+      );
+    };
+
+    socket.on('food:stock_updated', handleStockUpdate);
+    return () => {
+      socket.off('food:stock_updated', handleStockUpdate);
+    };
+  }, [socket]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

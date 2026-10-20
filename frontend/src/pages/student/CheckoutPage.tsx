@@ -37,8 +37,16 @@ export const CheckoutPage: React.FC = () => {
     return null;
   }
 
+  const hasSoldOut = items.some((i) => !i.food.available || i.food.stockQuantity <= 0);
+  const hasExceeded = items.some((i) => i.quantity > i.food.stockQuantity);
+  const cannotCheckout = hasSoldOut || hasExceeded;
+
   const handleCreateOrder = async () => {
     setError(null);
+    if (cannotCheckout) {
+      setError('Some items in your cart exceed available stock or have sold out. Please return to your cart to adjust quantities.');
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -227,12 +235,28 @@ export const CheckoutPage: React.FC = () => {
               </div>
             </div>
 
+            {cannotCheckout && (
+              <div className="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-400" />
+                <span>One or more items in your cart exceed available kitchen stock or are sold out.</span>
+              </div>
+            )}
+
             <button
               onClick={handleCreateOrder}
-              disabled={isSubmitting}
-              className="w-full btn-primary py-3.5 text-sm font-bold shadow-3d-btn flex items-center justify-center gap-2"
+              disabled={isSubmitting || cannotCheckout}
+              className={`w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 rounded-2xl transition-all ${
+                cannotCheckout
+                  ? 'bg-white/10 text-slate-500 cursor-not-allowed border border-white/5'
+                  : 'btn-primary shadow-3d-btn'
+              }`}
             >
-              {isSubmitting ? 'Creating Order...' : `Pay ₹${totalAmount} Now`} <ArrowRight className="w-4 h-4" />
+              {isSubmitting
+                ? 'Creating Order...'
+                : cannotCheckout
+                ? 'Adjust Cart Quantity to Order'
+                : `Pay ₹${totalAmount} Now`}
+              {!cannotCheckout && <ArrowRight className="w-4 h-4" />}
             </button>
 
             <p className="text-[11px] text-slate-400 text-center">
